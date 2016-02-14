@@ -18,7 +18,7 @@ def encode(rstr,txtbox,g_setting):
 def configSet(g_setting,txt1,txt2,top):
 	s1 = txt1.get()
 	s2 = txt2.get()
-	if(s1 != None and s2 != None):
+	if(len(s1) > 0 and len(s2) > 0):
 		g_setting['randomSeed'] = float(s1)
 		g_setting['randomStart'] = int(s2)
 		top.destroy()
@@ -43,8 +43,10 @@ def customSetting(win,g_setting):
 	top.iconbitmap("favicon.ico")
 	prompt1 = Tk.Label(top,text="randomSeed: ")
 	txt1 = Tk.Entry(top)
+	txt1.insert(0,str(g_setting['randomSeed']))
 	prompt2 = Tk.Label(top,text="randomStart: ")
 	txt2 = Tk.Entry(top)
+	txt2.insert(0,str(g_setting['randomStart']))
 	btn = Tk.Button(top,text="OK",command=lambda: configSet(g_setting,txt1,txt2,top))
 
 	prompt1.grid(row=0,column=0)
@@ -101,5 +103,3 @@ def main():
 	win.config(menu=menubar)
 	Tk.mainloop()
 
-
-main()
