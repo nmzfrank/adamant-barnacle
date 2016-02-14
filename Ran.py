@@ -66,11 +66,11 @@ class decode():
 
 
 def test():
-	rg1 = randomGenerator(0.724, 1000)
-	rg2 = randomGenerator(0.724, 1000)
+	rg1 = randomGenerator(0.8, 1000)
+	rg2 = randomGenerator(0.8, 1000)
 	e = encode('hello world', rg1)
 	cipherText = e.transform()
-	plainText = decode(cipherText, rg2).transform()
+	plainText = decode("yqo{dujpe", rg2).transform()
 	print cipherText
 	print plainText
 
