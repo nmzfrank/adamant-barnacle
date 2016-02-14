@@ -15,6 +15,15 @@ def encode(rstr,txtbox,g_setting):
 	except Encode.rangeException:
 		tkMessageBox.showinfo(message=u"输入不能为空！")
 
+def configSet(g_setting,txt1,txt2,top):
+	s1 = txt1.get()
+	s2 = txt2.get()
+	if(s1 != None and s2 != None):
+		g_setting['randomSeed'] = float(s1)
+		g_setting['randomStart'] = int(s2)
+		top.destroy()
+
+
 def loadFile(win,str1):
 	 filename = tkFileDialog.askopenfilename(initialdir = 'D:')
 	 if(filename):
@@ -31,6 +40,19 @@ def saveFile(win, str2):
 def customSetting(win,g_setting):
 	top = Tk.Toplevel(win)
 	top.title("settings...")
+	top.iconbitmap("favicon.ico")
+	prompt1 = Tk.Label(top,text="randomSeed: ")
+	txt1 = Tk.Entry(top)
+	prompt2 = Tk.Label(top,text="randomStart: ")
+	txt2 = Tk.Entry(top)
+	btn = Tk.Button(top,text="OK",command=lambda: configSet(g_setting,txt1,txt2,top))
+
+	prompt1.grid(row=0,column=0)
+	txt1.grid(row=0,column=1)
+	prompt2.grid(row=1,column=0)
+	txt2.grid(row=1,column=1)
+	btn.grid(row=2,column=0,columnspan=2)
+
 
 
 
@@ -40,8 +62,7 @@ def main():
 	win = Tk.Tk()
 	win.title('codeShell')
 	win.geometry('600x400')
-
-	
+	win.iconbitmap('favicon.ico')
 
 	inputframe = Tk.Frame(win)
 	outputframe = Tk.Frame(win)
