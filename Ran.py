@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from randomException import *
 
 class randomGenerator(object):
@@ -28,6 +29,78 @@ class randomGenerator(object):
 			self.__iteration()
 			self.genList.append(self.num % 10)
 		return self.genList
+
+
+
+class Engine():
+	def __init__(self, content, type):
+		self.rG = randomGenerator(0.7, 1000)
+		self.content = content
+		if(type == "square"):
+			self.engine = squareEngine(self.content,self.rG)
+		if(type == "morse"):
+			self.engine = morseEngine(self.content)
+
+	def encode(self):
+		return self.engine.encode()
+
+	def decode(self):
+		return self.engine.decode()
+
+	def setProperty(self, args):
+		self.engine.setProperty(args)
+
+	def printHelp(self):
+		return self.engine.printHelp()
+
+
+class squareEngine():
+	def __init__(self,content, rG):
+		self.content = content
+		self.rG = rG
+		self.length = len(self.content)
+
+	def encode(self):
+		self.cipherText = ''
+		self.transitionList = self.rG.generate(self.length)
+		for index in range(self.length):
+			self.cipherText += chr(ord(self.content[index]) + self.transitionList[index])
+		return self.cipherText
+
+	def decode(self):
+		self.plainText = ''
+		self.transitionList = self.rG.generate(self.length)
+		for index in range(self.length):
+			self.plainText += chr(ord(self.content[index]) - self.transitionList[index])
+		return self.plainText
+
+	def setProperty(self,rG):
+		self.rG = rG
+
+	def printHelp(self):
+		helpScript = "nothing to say"
+		return helpScript
+
+
+class morseEngine():
+	def __init__(self,content):
+		self.content = content
+		self.seperator = ' '
+		self.length = len(self.content)
+
+	def encode(self):
+		return self.content
+
+	def decode(self):
+		return self.content
+
+	def setProperty(self,seperator):
+		self.seperator = seperator
+
+	def printHelp(self):
+		helpScript = "nothing to say"
+		return helpScript
+
 
 
 class encode():

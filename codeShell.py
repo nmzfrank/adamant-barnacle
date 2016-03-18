@@ -7,12 +7,16 @@ import tkFileDialog
 def reserved():
 	tkMessageBox.showinfo(message='reserved...')
 
+def changeEngine(type,g_setting):
+	g_setting["engineType"] = type
+
 def decode(rstr,txtbox,g_setting,workingState):
 	rg = Ran.randomGenerator(g_setting['randomSeed'],g_setting['randomStart'])
 	ciphertext = rstr[:-1]
+	engine = Ran.Engine(ciphertext, g_setting['engineType'])
+	engine.setProperty(rg)
 	try:
-		d = Ran.decode(ciphertext,rg)
-		plaintext = d.transform()
+		plaintext = engine.decode()
 		txtbox.delete(1.0,Tk.END)
 		txtbox.insert(1.0,plaintext)
 		workingState[0].set('d')
@@ -22,9 +26,10 @@ def decode(rstr,txtbox,g_setting,workingState):
 def encode(rstr,txtbox,g_setting,workingState):
 	rg = Ran.randomGenerator(g_setting['randomSeed'],g_setting['randomStart'])
 	plaintext = rstr[:-1]
+	engine = Ran.Engine(plaintext, g_setting['engineType'])
+	engine.setProperty(rg)
 	try:
-		e = Ran.encode(plaintext,rg)
-		ciphertext = e.transform()
+		ciphertext = engine.encode()
 		txtbox.delete(1.0,Tk.END)
 		txtbox.insert(1.0,ciphertext)
 		workingState[0].set('e')
@@ -83,7 +88,7 @@ def customSetting(win,g_setting):
 
 
 def main():
-	g_setting = {'randomSeed':0.8,'randomStart':1000}
+	g_setting = {'randomSeed':0.8,'randomStart':1000, "engineType":"square"}
 	workingState = []
 	win = Tk.Tk()
 	win.title('codeShell')
@@ -137,8 +142,8 @@ def main():
 	menubar.add_cascade(label="setting",menu=settingmenu)
 
 	generatormenu = Tk.Menu(menubar,tearoff=0)
-	generatormenu.add_command(label="square", command=lambda: reserved())
-	generatormenu.add_command(label="moore code", command=lambda: reserved())
+	generatormenu.add_command(label="square", command=lambda: changeEngine("square",g_setting))
+	generatormenu.add_command(label="morse code", command=lambda: changeEngine("morse",g_setting))
 	menubar.add_cascade(label="generator",menu=generatormenu)
 
 	win.config(menu=menubar)
